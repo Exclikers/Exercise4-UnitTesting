@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MenuOptions.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">service</a> &gt; <a href="index.source.html" class="el_package">com.expansion</a> &gt; <span class="el_source">MenuOptions.java</span></div><h1>MenuOptions.java</h1><pre class="source lang-java linenums">package com.expansion;
+
+import java.util.Scanner;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Map; 
+import java.util.Set; 
+import java.util.List; 
+import java.util.Comparator;
+import java.util.Map.Entry;
+import java.util.InputMismatchException;
+
+<span class="fc" id="L17">public class MenuOptions {</span>
+
+	static boolean menuList() {
+
+<span class="fc" id="L21">		System.out.println(&quot;\n&quot;);</span>
+<span class="fc" id="L22">	  	System.out.println(&quot;What do you want to do?&quot;);</span>
+<span class="fc" id="L23">	  	System.out.println(&quot;1. Search&quot;);</span>
+<span class="fc" id="L24">	  	System.out.println(&quot;2. Edit&quot;);</span>
+<span class="fc" id="L25">	  	System.out.println(&quot;3. Print&quot;);</span>
+<span class="fc" id="L26">	  	System.out.println(&quot;4. Add New Row&quot;);</span>
+<span class="fc" id="L27">	  	System.out.println(&quot;5. Sort&quot;);</span>
+<span class="fc" id="L28">	  	System.out.println(&quot;6. Reset&quot;);</span>
+<span class="fc" id="L29">	  	System.out.println(&quot;7. Exit&quot;);</span>
+<span class="fc" id="L30">		System.out.print(&quot;\n&quot;);</span>
+
+<span class="fc" id="L32">		return true;</span>
+	}
+
+	static void mainMenu() {
+
+<span class="nc" id="L37">				Scanner getInput = new Scanner(System.in);</span>
+			  	boolean isNumber;
+<span class="nc" id="L39">			  	int loop = 1 ;</span>
+<span class="nc bnc" id="L40" title="All 2 branches missed.">			  	while (loop &gt; 0) {</span>
+
+<span class="nc" id="L42">					  	menuList();</span>
+					  	
+<span class="nc" id="L44">						int select = 0;</span>
+
+					  	do {
+<span class="nc" id="L47">					    	System.out.print(&quot;Please Select an Option: &quot;);</span>
+<span class="nc bnc" id="L48" title="All 2 branches missed.">					    	if (getInput.hasNextInt()) {</span>
+<span class="nc" id="L49">					    		select = getInput.nextInt();</span>
+<span class="nc" id="L50">					    		isNumber = true;</span>
+					    	} else {
+<span class="nc" id="L52">					    		System.out.println(&quot;Please Input a valid number!&quot;);</span>
+<span class="nc" id="L53">					    		isNumber = false;</span>
+<span class="nc" id="L54">					    		getInput.next();</span>
+					    	}
+<span class="nc bnc" id="L56" title="All 2 branches missed.">					    } while (!(isNumber));</span>
+
+<span class="nc" id="L58">					    System.out.print(&quot;\n&quot;);</span>
+
+<span class="nc" id="L60">					   selectedOption(select);</span>
+<span class="nc" id="L61">			 	}  	</span>
+<span class="nc" id="L62">	}</span>
+
+	static int selectedOption(int select) {
+
+<span class="fc" id="L66">			Scanner getInput = new Scanner(System.in);</span>
+
+<span class="pc bpc" id="L68" title="1 of 2 branches missed.">			if (select == 1) {</span>
+<span class="nc" id="L69">		    	System.out.print(&quot;Search: &quot;);</span>
+<span class="nc" id="L70">		    	String search = getInput.next();</span>
+<span class="nc" id="L71">		    	menuSearch(search);</span>
+		    }
+
+<span class="pc bpc" id="L74" title="1 of 2 branches missed.">		    if (select == 2) {</span>
+
+<span class="nc" id="L76">		    	System.out.print(&quot;Input a Key to Edit Value : &quot;);</span>
+<span class="nc" id="L77">				String inKey = getInput.next();</span>
+
+<span class="nc" id="L79">		    	boolean found = menuEditValue(inKey);</span>
+<span class="nc bnc" id="L80" title="All 2 branches missed.">		    	if(found == false) {</span>
+<span class="nc" id="L81">		    		mainMenu();</span>
+		    	}
+
+<span class="nc" id="L84">		    	System.out.print(&quot;Enter New Value : &quot;);</span>
+<span class="nc" id="L85">				String newValue = getInput.next();	</span>
+
+<span class="nc" id="L87">				found = menuEditNewValue(inKey, newValue);</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">				if(found == false) {</span>
+<span class="nc" id="L89">		    		mainMenu();</span>
+		    	}
+
+<span class="nc" id="L92">		    	updateData();</span>
+<span class="nc" id="L93">				menuPrint();</span>
+<span class="nc" id="L94">				mainMenu();</span>
+		    }
+
+<span class="fc bfc" id="L97" title="All 2 branches covered.">		  	if (select == 3) {</span>
+<span class="fc" id="L98">		    	menuPrint();</span>
+		    }
+
+<span class="pc bpc" id="L101" title="1 of 2 branches missed.">		    if (select == 4) {</span>
+
+		    	try {
+<span class="nc" id="L104">		    	System.out.print(&quot;Please Enter Additinal Row: &quot;);</span>
+<span class="nc" id="L105">		    	int updateRow = getInput.nextInt();</span>
+<span class="nc" id="L106">		    	addRow(updateRow);</span>
+<span class="nc" id="L107">		    	} catch (InputMismatchException e) {</span>
+<span class="nc" id="L108">		    		System.out.println(&quot;Please Input a valid number!&quot;);</span>
+<span class="nc" id="L109">		    	}</span>
+		    }
+
+<span class="fc bfc" id="L112" title="All 2 branches covered.">			if (select == 5) {</span>
+<span class="fc" id="L113">		    	toSort();</span>
+<span class="fc" id="L114">		    	updateData();</span>
+<span class="fc" id="L115">				menuPrint();</span>
+		    }
+
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">		    if (select == 6) {</span>
+<span class="nc" id="L119">		    	menuReset();</span>
+<span class="nc" id="L120">		    	menuExit();</span>
+		    }
+
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">		    if (select == 7) {</span>
+<span class="nc" id="L124">		    	menuExit();</span>
+		    }
+
+<span class="fc bfc" id="L127" title="All 2 branches covered.">		    if (select &gt; 7){</span>
+<span class="fc" id="L128">		    	System.out.print(&quot;Please Select only from 1 - 7&quot;);</span>
+		    }
+<span class="fc" id="L130">		    return select;</span>
+	}
+
+	static String menuSearch(String search) {
+
+<span class="fc" id="L135">			String value = search;</span>
+<span class="fc" id="L136">			boolean flagKey = FileStorage.cellData.containsKey(value);</span>
+<span class="fc" id="L137">			boolean flagValue = FileStorage.cellData.containsValue(value);</span>
+
+<span class="fc" id="L139">			String result = FileStorage.cellData.get(value);</span>
+
+<span class="pc bpc" id="L141" title="1 of 2 branches missed.">			if (flagKey == true) {</span>
+<span class="nc" id="L142">				System.out.println(&quot;The Key Exist on our Table with the value of : &quot; + result);</span>
+			} 
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">			if (flagValue == true) {</span>
+<span class="nc" id="L145">				System.out.println(&quot;The Value Exist on our Table Please Search the Key Instead&quot;);</span>
+			} 
+<span class="pc bpc" id="L147" title="2 of 4 branches missed.">			if (flagKey == false &amp;&amp; flagValue == false) {</span>
+<span class="fc" id="L148">				System.out.println(&quot;The Key of Value Does Not Exist on our table!&quot;);</span>
+			}
+<span class="fc" id="L150">			return result;</span>
+	}
+
+	static boolean menuEditValue(String inKey) {
+
+<span class="fc" id="L155">			boolean found = true;</span>
+
+<span class="pc bpc" id="L157" title="1 of 2 branches missed.">			if (FileStorage.cellData.containsKey(inKey) == false) {</span>
+<span class="fc" id="L158">				System.out.println(&quot;Key Not Found!&quot;);</span>
+<span class="fc" id="L159">				found = false;</span>
+			}
+<span class="fc" id="L161">			return found;</span>
+	}
+
+	static boolean menuEditNewValue(String inKey, String newValue) {
+
+<span class="fc" id="L166">			boolean found = true;</span>
+<span class="fc" id="L167">			int size = newValue.length();</span>
+<span class="fc bfc" id="L168" title="All 2 branches covered.">			if (size &lt;= 3) {</span>
+<span class="fc" id="L169">				FileStorage.cellData.replace(inKey, newValue);</span>
+<span class="fc" id="L170">				System.out.println(&quot;\nValue Successfuly Updated\n&quot;);</span>
+			} else {
+<span class="fc" id="L172">				System.out.println(&quot;Please enter max of 3 characters&quot;);</span>
+<span class="fc" id="L173">				found = false;</span>
+			}
+<span class="fc" id="L175">			return found;</span>
+	}
+
+	static int menuPrint() {
+<span class="fc" id="L179">			int col = Integer.parseInt(FileStorage.storeDimension[1]);</span>
+<span class="fc" id="L180">			int counter = 0;</span>
+<span class="fc" id="L181">			Scanner openFile = null;</span>
+
+  			try {
+<span class="fc" id="L184">				openFile = new Scanner(new File(&quot;data.txt&quot;));</span>
+
+<span class="pc bpc" id="L186" title="1 of 2 branches missed.">  				while (openFile.hasNextLine()) {</span>
+<span class="nc" id="L187">					String line = openFile.nextLine();</span>
+<span class="nc" id="L188">					System.out.print(line + &quot; : &quot; + openFile.nextLine() + &quot;\t&quot;);	</span>
+<span class="nc" id="L189">					counter = counter + 1;</span>
+
+<span class="nc bnc" id="L191" title="All 2 branches missed.">					if (counter &gt;= col) {</span>
+<span class="nc" id="L192">						System.out.print(&quot;\n&quot;);</span>
+<span class="nc" id="L193">						counter = 0;</span>
+					}
+<span class="nc" id="L195">				}</span>
+<span class="nc" id="L196">			} catch (FileNotFoundException e) {</span>
+<span class="nc" id="L197">				System.out.println(&quot;Unable to open file&quot;);</span>
+<span class="fc" id="L198">			}</span>
+
+			try {
+<span class="fc" id="L201">				openFile.close();	</span>
+<span class="nc" id="L202">			} catch (NullPointerException e) {</span>
+<span class="nc" id="L203">				System.out.println(&quot;Unable to open file&quot;);</span>
+<span class="fc" id="L204">			}</span>
+			
+<span class="fc" id="L206">			return counter;</span>
+	}
+
+	static int addRow(int updateRow){
+
+<span class="fc" id="L211">			FileStorage randomASCII = new FileStorage();</span>
+<span class="fc" id="L212">	    	int col = Integer.parseInt(FileStorage.storeDimension[1]);</span>
+	  		
+	
+<span class="fc bfc" id="L215" title="All 2 branches covered.">    		if (updateRow &lt;= 1000){</span>
+		    	
+<span class="fc bfc" id="L217" title="All 2 branches covered.">		    	for(int index1 = 1 ; index1 &lt;= updateRow ; index1++) {</span>
+<span class="pc bpc" id="L218" title="1 of 2 branches missed.">			  		for(int index2 = 1 ; index2 &lt;= col ; index2++) {</span>
+<span class="nc" id="L219">			  			randomASCII.generateASCII();</span>
+<span class="nc" id="L220">						String key = randomASCII.generateASCII();</span>
+<span class="nc" id="L221">						randomASCII.generateASCII();</span>
+<span class="nc" id="L222">						String value = randomASCII.generateASCII();</span>
+<span class="nc" id="L223">		    			FileStorage.cellData.put(key, value);</span>
+					}
+
+				}
+
+<span class="fc" id="L228">				System.out.println(&quot;\nRow Successfuly Added!\n&quot;);		</span>
+<span class="fc" id="L229">    			updateData();</span>
+<span class="fc" id="L230">    			updateDimension(updateRow);</span>
+<span class="fc" id="L231">    			menuPrint();</span>
+		
+		    } else {
+
+<span class="fc" id="L235">				System.out.print(&quot;Max of 1000 Rows&quot;);</span>
+
+			}	
+	
+
+<span class="fc" id="L240">	    	return col;</span>
+	}
+
+	static boolean deleteData(String filename) {
+<span class="fc" id="L244">			File myFile = new File(filename);</span>
+<span class="fc" id="L245">			myFile.delete();</span>
+<span class="fc" id="L246">			return true;</span>
+	}
+
+	static String updateData() {
+			
+<span class="fc" id="L251">			String update = &quot;Successful&quot;;</span>
+<span class="fc" id="L252">			deleteData(&quot;data.txt&quot;);</span>
+
+	    	try {
+
+<span class="fc" id="L256">	    		FileWriter saveFile = new FileWriter(new File(&quot;data.txt&quot;));</span>
+
+<span class="pc bpc" id="L258" title="1 of 2 branches missed.">		    	for (String i : FileStorage.cellData.keySet()) {</span>
+<span class="nc" id="L259">		    		saveFile.write(i+&quot;\n&quot;);</span>
+<span class="nc" id="L260">		    		saveFile.write(FileStorage.cellData.get(i)+&quot;\n&quot;);</span>
+<span class="nc" id="L261">		    	}</span>
+
+<span class="fc" id="L263">	    		saveFile.close();</span>
+<span class="nc" id="L264">	    	} catch (IOException e) {</span>
+<span class="nc" id="L265">				System.out.println(&quot;Unable to open file for writing&quot;);</span>
+<span class="fc" id="L266">			}</span>
+<span class="fc" id="L267">			return update;</span>
+	}
+
+	static String updateDimension(int updateRow) {
+
+<span class="fc" id="L272">			String update = &quot;Successful&quot;;</span>
+<span class="fc" id="L273">			deleteData(&quot;dimension.txt&quot;);</span>
+
+	    	try {
+<span class="fc" id="L276">	    		FileWriter saveFile = new FileWriter(new File(&quot;dimension.txt&quot;));</span>
+<span class="fc" id="L277">	    		int newRow = Integer.parseInt(FileStorage.storeDimension[0]);</span>
+<span class="fc" id="L278">	    		newRow = newRow + updateRow;</span>
+
+<span class="fc" id="L280">	    		saveFile.write(newRow+&quot;\n&quot;);</span>
+<span class="fc" id="L281">	    		saveFile.write(FileStorage.storeDimension[1]+&quot;\n&quot;);</span>
+		    	
+<span class="fc" id="L283">	    		saveFile.close();</span>
+
+<span class="nc" id="L285">	    	} catch (IOException e) {</span>
+<span class="nc" id="L286">				System.out.println(&quot;Unable to open file for writing&quot;);</span>
+<span class="fc" id="L287">			}</span>
+<span class="fc" id="L288">			return update;</span>
+	}
+
+	static Set&lt;Map.Entry&lt;String, String&gt;&gt; toSort() {
+
+<span class="fc" id="L293">      		Set&lt;Map.Entry&lt;String, String&gt;&gt; foundSet = FileStorage.cellData.entrySet();</span>
+<span class="fc" id="L294">        	List&lt;Map.Entry&lt;String, String&gt;&gt; foundListEntry = new ArrayList&lt;Map.Entry&lt;String, String&gt;&gt;(foundSet);</span>
+
+<span class="fc" id="L296">        	Collections.sort(foundListEntry, new Comparator&lt;Map.Entry&lt;String, String&gt;&gt;() {</span>
+        		  	public int compare(Entry&lt;String, String&gt; es1, Entry&lt;String, String&gt; es2) {
+<span class="nc" id="L298">	                	return es1.getKey().compareTo(es2.getKey());</span>
+            		}
+      		});
+
+<span class="fc" id="L302">        	FileStorage.cellData.clear();</span>
+
+<span class="pc bpc" id="L304" title="1 of 2 branches missed.">	        for(Map.Entry&lt;String, String&gt; map : foundListEntry) {</span>
+<span class="nc" id="L305">	            FileStorage.cellData.put(map.getKey(), map.getValue());</span>
+<span class="nc" id="L306">	        }</span>
+
+<span class="fc" id="L308">	        System.out.println(&quot;\nThe table has been Successfuly Sorted!\n&quot;);</span>
+<span class="fc" id="L309">	        return foundSet;</span>
+        	
+	}
+
+	static boolean menuReset() {
+<span class="fc" id="L314">			deleteData(&quot;data.txt&quot;);</span>
+<span class="fc" id="L315">			deleteData(&quot;dimension.txt&quot;);</span>
+<span class="fc" id="L316">			FileStorage.cellData.clear();</span>
+<span class="fc" id="L317">			System.out.println(&quot;Successfuly Resetted&quot;);</span>
+<span class="fc" id="L318">	    	return true;</span>
+	}
+
+	static void menuExit() {
+<span class="nc" id="L322">	  		System.out.println(&quot;Thank you for using our Software!&quot;);</span>
+<span class="nc" id="L323">	    	System.exit(0);</span>
+<span class="nc" id="L324">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
